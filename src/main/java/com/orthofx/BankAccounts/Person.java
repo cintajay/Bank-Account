@@ -1,19 +1,25 @@
 package com.orthofx.BankAccounts;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Person {
-	private int id;
+	
+	@Id
+	private String id; //string used to avoid error in equals method in service
 	private String name;
 //	private Account account;
 	
-	public Person(int id, String name) {
+	public Person(String id, String name) {
 		this.id = id;
 		this.name = name;
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
