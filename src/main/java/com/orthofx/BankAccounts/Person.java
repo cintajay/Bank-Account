@@ -2,8 +2,10 @@ package com.orthofx.BankAccounts;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="persons")
 public class Person {
 	
 	@Id
