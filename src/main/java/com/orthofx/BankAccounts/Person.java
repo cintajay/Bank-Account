@@ -13,7 +13,12 @@ public class Person {
 	private String name;
 //	private Account account;
 	
-	public Person(String id, String name) {
+	public Person() {
+		super(); //?
+	}
+	
+	public Person(String id, String name) { 
+		super();
 		this.id = id;
 		this.name = name;
 	}
