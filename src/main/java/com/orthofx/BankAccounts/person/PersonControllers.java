@@ -1,4 +1,4 @@
-package com.orthofx.BankAccounts;
+package com.orthofx.BankAccounts.person;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,30 +11,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class BankAccountControllers {
+public class PersonControllers {
 	
 	@Autowired
-	private BankService bankservice;
+	private PersonService personService;
 	
 	@RequestMapping("/persons")
 	public List<Person>getAllPersons(){
-		return bankservice.getAllPersons();
+		return personService.getAllPersons();
 	}
 	
 	@RequestMapping("/persons/{id}")  //default is get
 	public Optional<Person> getPerson(@PathVariable String id) {
-		return bankservice.getPerson(id);
+		return personService.getPerson(id);
 	}
 	@RequestMapping(method=RequestMethod.POST, value="/persons") //post is specified
 	public void addPerson(@RequestBody Person person) { //converts from JSON to object of type Person
-		bankservice.addPerson(person);
+		personService.addPerson(person);
 	}
 	@RequestMapping(method=RequestMethod.PUT, value="/persons/{id}") 
 	public void updatePerson(@RequestBody Person person, @PathVariable String id) { 
-		bankservice.updatePerson(id, person);
+		personService.updatePerson(id, person);
 	}
 	@RequestMapping(method=RequestMethod.DELETE, value="/persons/{id}") 
 	public void deletePerson(@PathVariable String id) {
-		bankservice.deletePerson(id);
+		personService.deletePerson(id);
 	}
 }

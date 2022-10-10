@@ -1,4 +1,4 @@
-package com.orthofx.BankAccounts;
+package com.orthofx.BankAccounts.person;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,6 +9,7 @@ import javax.persistence.Table;
 public class Person {
 	
 	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private String id; //string used to avoid error in equals method in service
 	private String name;
 //	private Account account;
