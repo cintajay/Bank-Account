@@ -12,22 +12,22 @@ public class AccountService {
 	@Autowired
 	private AccountRepository accountRepository;
 	
-	public List<Account> getAllAccounts(){    //public method to get the list
+	public List<Account> getAllAccounts(Long id){    //public method to get the list
 		List<Account> accounts =new ArrayList<>();
-		accountRepository.findAll()
+		accountRepository.findByPersonId(id)
 		.forEach(accounts::add);
 		return accounts;
 	}
-	public Optional<Account> getAccount(String id) {	//to get 1 account based on id
+	public Optional<Account> getAccount(Long id) {	//to get 1 account based on id
 		return accountRepository.findById(id); 
 	}
 	public void addAccount(Account account) {
 		accountRepository.save(account);
 	}
-	public void updateAccount(String id, Account account) {
+	public void updateAccount(Account account) {
 		accountRepository.save(account);
 	}
-	public void deleteAccount(String id) {
+	public void deleteAccount(Long id) {
 		accountRepository.deleteById(id); 
 	}
 

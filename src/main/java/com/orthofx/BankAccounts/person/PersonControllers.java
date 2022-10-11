@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PersonControllers {
 	
-	@Autowired
+	@Autowired //for dependency injection
 	private PersonService personService;
 	
 	@RequestMapping("/persons")
@@ -22,7 +22,7 @@ public class PersonControllers {
 	}
 	
 	@RequestMapping("/persons/{id}")  //default is get
-	public Optional<Person> getPerson(@PathVariable String id) {
+	public Optional<Person> getPerson(@PathVariable Long id) {
 		return personService.getPerson(id);
 	}
 	@RequestMapping(method=RequestMethod.POST, value="/persons") //post is specified
@@ -30,11 +30,11 @@ public class PersonControllers {
 		personService.addPerson(person);
 	}
 	@RequestMapping(method=RequestMethod.PUT, value="/persons/{id}") 
-	public void updatePerson(@RequestBody Person person, @PathVariable String id) { 
+	public void updatePerson(@RequestBody Person person, @PathVariable Long id) { 
 		personService.updatePerson(id, person);
 	}
 	@RequestMapping(method=RequestMethod.DELETE, value="/persons/{id}") 
-	public void deletePerson(@PathVariable String id) {
+	public void deletePerson(@PathVariable Long id) {
 		personService.deletePerson(id);
 	}
 }

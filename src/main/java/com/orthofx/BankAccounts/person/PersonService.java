@@ -20,16 +20,16 @@ public class PersonService {
 		return persons;
 	}
 	
-	public Optional<Person> getPerson(String id) {	//to get 1 person based on id
+	public Optional<Person> getPerson(Long id) {	//to get 1 person based on id
 		return personRepository.findById(id); //findOne() didn't work
 	}
 	public void addPerson(Person person) {
 		personRepository.save(person);
 	}
-	public void updatePerson(String id, Person person) {
+	public void updatePerson(Long id, Person person) {
 		personRepository.save(person);
 	}
-	public void deletePerson(String id) {
+	public void deletePerson(Long id) {
 		personRepository.deleteById(id); 
 	}
 	

@@ -10,31 +10,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orthofx.BankAccounts.person.Person;
+
 @RestController
 public class AccountController {
 	
 	@Autowired
 	private AccountService accountService;
 	
-	@RequestMapping("/accounts")
-	public List<Account>getAllPersons(){
-		return accountService.getAllAccounts();
+	@RequestMapping("/persons/{id}/accounts")
+	public List<Account>getAllAccounts(@PathVariable Long id){
+		return accountService.getAllAccounts(id);
 	}
 	
-	@RequestMapping("/accounts/{id}")  //default is get
-	public Optional<Account> getAccount(@PathVariable String id) {
+	@RequestMapping("/persons/{personId}/accounts/{id}")  //default is get
+	public Optional<Account> getAccount(@PathVariable Long id) {
 		return accountService.getAccount(id);
 	}
-	@RequestMapping(method=RequestMethod.POST, value="/accounts") //post is specified
-	public void addAccount(@RequestBody Account account) { //converts from JSON to object of type Person
+	@RequestMapping(method=RequestMethod.POST, value="/persons/{personId}/accounts") //post is specified
+	public void addAccount(@RequestBody Account account, @PathVariable Long personId) { //converts from JSON to object of type Person
+		account.setPerson(new Person(personId,""));
 		accountService.addAccount(account);
 	}
-	@RequestMapping(method=RequestMethod.PUT, value="/accounts/{id}") 
-	public void updateAccount(@RequestBody Account account, @PathVariable String id) { 
-		accountService.updateAccount(id, account);
+	@RequestMapping(method=RequestMethod.PUT, value="/persons/{personId}/accounts/{id}") 
+	public void updateAccount(@RequestBody Account account, @PathVariable Long personId, @PathVariable String id) { 
+		account.setPerson(new Person(personId,""));
+		accountService.updateAccount(account);
 	}
-	@RequestMapping(method=RequestMethod.DELETE, value="/accounts/{id}") 
-	public void deletePerson(@PathVariable String id) {
+	@RequestMapping(method=RequestMethod.DELETE, value="/persons/{personId}/accounts/{id}") 
+	public void deletePerson(@PathVariable Long personId, @PathVariable Long id) {
 		accountService.deleteAccount(id);
 	}
 
