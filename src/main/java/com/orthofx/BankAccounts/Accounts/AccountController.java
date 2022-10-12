@@ -27,18 +27,22 @@ public class AccountController {
 	public Optional<Account> getAccount(@PathVariable Long id) {
 		return accountService.getAccount(id);
 	}
+	
 	@RequestMapping(method=RequestMethod.POST, value="/persons/{personId}/accounts") //post is specified
 	public void addAccount(@RequestBody Account account, @PathVariable Long personId) { //converts from JSON to object of type Person
+		
 		account.setPerson(new Person(personId,""));
 		accountService.addAccount(account);
 	}
+	
 	@RequestMapping(method=RequestMethod.PUT, value="/persons/{personId}/accounts/{id}") 
 	public void updateAccount(@RequestBody Account account, @PathVariable Long personId, @PathVariable String id) { 
 		account.setPerson(new Person(personId,""));
 		accountService.updateAccount(account);
 	}
+	
 	@RequestMapping(method=RequestMethod.DELETE, value="/persons/{personId}/accounts/{id}") 
-	public void deletePerson(@PathVariable Long personId, @PathVariable Long id) {
+	public void deleteAccount(@PathVariable Long personId, @PathVariable Long id) {
 		accountService.deleteAccount(id);
 	}
 
