@@ -17,35 +17,52 @@ import com.orthofx.BankAccounts.exceptionHandling.ResourceNotFoundException;
 @RestController
 public class PersonControllers {
 
-	@Autowired // for dependency injection
-	private PersonService personService;
-
+	@Autowired 
+	private PersonConverterService personService;
+	
 	@RequestMapping("/persons")
-	public List<Person> getAllPersons() {
-		return personService.getAllPersons();
+	public List<PersonDto> getAllPersons() { //list of person dto
+		return personService.getAllPersons(); //getting from dto instead of rep //ie dto object is send
 	}
-
-	@RequestMapping("/persons/{id}")   //default is get
-//	@ResponseStatus(HttpStatus.OK)
-	public Optional<Person> getPerson(@PathVariable Long id) {
+	
+//	@RequestMapping("/persons/{id}")   
+////	@ResponseStatus(HttpStatus.OK)
+//	public Optional<Person> getPerson(@PathVariable Long id) {
+//		return personService.getPerson(id);
+////				.orElseThrow(()-> new ResourceNotFoundException("Person not found of id:"+id));
+//		}
+	@RequestMapping("/persons/{id}") 
+	public PersonDto getPerson(@PathVariable Long id) {
 		return personService.getPerson(id);
-//				.orElseThrow(()-> new ResourceNotFoundException("Person not found of id:"+id));
-		}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/persons") // post is specified
-	public void addPerson(@RequestBody Person person) { // converts from JSON to object of type Person
-		personService.addPerson(person);
 	}
-
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/persons") 
+	public void addPerson(@RequestBody PersonDto dto) { 
+		personService.addPerson(dto);
+	}
+	
+//	@RequestMapping(method = RequestMethod.PUT, value = "/persons/{id}") //if person doesnt exist it posts as new element, this shouldnt happen
+//	public void updatePerson(@RequestBody Person person, @PathVariable Long id) {
+//			if(personService.checkPerson(id)) {
+//				Person existingPerson=personService.getOnePerson(id);
+//				existingPerson.setName(person.getName());
+//				personService.updatePerson(id, existingPerson);
+//			}
+//			else {
+//				personService.updatePerson(id, person); //or throw exception
+//			}				
+//	}
+	
 	@RequestMapping(method = RequestMethod.PUT, value = "/persons/{id}") //if person doesnt exist it posts as new element, this shouldnt happen
-	public void updatePerson(@RequestBody Person person, @PathVariable Long id) {
+	public void updatePerson(@RequestBody PersonDto dto, @PathVariable Long id) {
 			if(personService.checkPerson(id)) {
 				Person existingPerson=personService.getOnePerson(id);
-				existingPerson.setName(person.getName());
+				
+				existingPerson.setName(dto.getName());
 				personService.updatePerson(id, existingPerson);
 			}
 			else {
-				personService.updatePerson(id, person); //or throw exception
+				 // throw exception
 			}				
 	}
 

@@ -16,29 +16,33 @@ import com.orthofx.BankAccounts.person.Person;
 public class AccountController {
 	
 	@Autowired
-	private AccountService accountService;
+	private AccountConverterService accountService;
 	
+//	@RequestMapping("/persons/{id}/accounts")
+//	public List<Account>getAllAccounts(@PathVariable Long id){
+//		return accountService.getAllAccounts(id);
+//	}
 	@RequestMapping("/persons/{id}/accounts")
-	public List<Account>getAllAccounts(@PathVariable Long id){
+	public List<AccountDto>getAllAccounts(@PathVariable Long id){
 		return accountService.getAllAccounts(id);
 	}
 	
 	@RequestMapping("/persons/{personId}/accounts/{id}")  //default is get
-	public Optional<Account> getAccount(@PathVariable Long id) {
+	public AccountDto getAccount(@PathVariable Long id) {
 		return accountService.getAccount(id);
 	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/persons/{personId}/accounts") //post is specified
-	public void addAccount(@RequestBody Account account, @PathVariable Long personId) { //converts from JSON to object of type Person
-		
+	public void addAccount(@RequestBody AccountDto account, @PathVariable Long personId) { //converts from JSON to object of type Person	
 		account.setPerson(new Person(personId,""));
 		accountService.addAccount(account);
 	}
 	
 	@RequestMapping(method=RequestMethod.PUT, value="/persons/{personId}/accounts/{id}") 
-	public void updateAccount(@RequestBody Account account, @PathVariable Long personId, @PathVariable String id) { 
+	public void updateAccount(@RequestBody AccountDto account, @PathVariable Long personId, @PathVariable Long id) { 
+		//check if personId, id exist
 		account.setPerson(new Person(personId,""));
-		accountService.updateAccount(account);
+		accountService.updateAccount(account, id);
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/persons/{personId}/accounts/{id}") 
