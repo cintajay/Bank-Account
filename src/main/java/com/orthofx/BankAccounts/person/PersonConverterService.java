@@ -1,11 +1,13 @@
 package com.orthofx.BankAccounts.person;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.orthofx.BankAccounts.Accounts.Account;
+import com.orthofx.BankAccounts.exceptionHandling.ResourceNotFoundException;
 
 @Service 
 public class PersonConverterService {
@@ -36,8 +38,9 @@ public class PersonConverterService {
 				.collect(Collectors.toList());
 	}
 		
-	public PersonDto getPerson(Long id) {
-		Person person=personRepository.getOne(id);	
+	public PersonDto getPerson(Long id) throws ResourceNotFoundException{
+		Person person=personRepository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("Person not found of id:"+id));
 		PersonDto dto=EntityToDTO(person);	
 		return dto;
 	}
@@ -45,15 +48,18 @@ public class PersonConverterService {
 		Person person=DTOToEntity(dto);
 		personRepository.save(person);
 	}
-	public boolean checkPerson(Long id) {
-		return personRepository.existsById(id);
+	
+	public Person getOnePerson(Long id) throws ResourceNotFoundException{     //for update to check if person exist
+		return personRepository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("Person not found of id:"+id));
 	}
-	public Person getOnePerson(Long id) {
-		return personRepository.getOne(id);
+	
+	public void updatePerson(Long id, PersonDto dto, Person existingPerson) {
+		Person person=DTOToEntity(dto);
+		existingPerson.setName(person.getName());
+		personRepository.save(existingPerson);
 	}
-	public void updatePerson(Long id, Person person) {
-		personRepository.save(person);
-	}
+	
 	public void deletePerson(Long id) {
 		personRepository.deleteById(id);
 	}

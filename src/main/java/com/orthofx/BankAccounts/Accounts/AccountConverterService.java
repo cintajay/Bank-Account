@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.orthofx.BankAccounts.exceptionHandling.ResourceNotFoundException;
 import com.orthofx.BankAccounts.person.Person;
 import com.orthofx.BankAccounts.person.PersonDto;
 
@@ -36,11 +37,15 @@ public class AccountConverterService {
 	}
 
 	public List<AccountDto> getAllAccounts(Long id) { 
-		return accountRepository.findByPersonId(id).stream().map(this::EntityToDTO).collect(Collectors.toList());
+		return accountRepository.findByPersonId(id)
+				.stream()
+				.map(this::EntityToDTO)
+				.collect(Collectors.toList());
 		
 	}
-	public AccountDto getAccount(Long id) {	//to get 1 account based on id
-		Account account=accountRepository.getOne(id); 
+	public AccountDto getAccount(Long id) throws ResourceNotFoundException{	//to get 1 account based on id
+		Account account=accountRepository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("Account not found of id:"+id));
 		AccountDto dto=EntityToDTO(account);
 		return dto;
 	}
@@ -57,5 +62,13 @@ public class AccountConverterService {
 	public void deleteAccount(Long id) {
 		accountRepository.deleteById(id);
 	}
+	public Account getOneAccount(Long id) throws ResourceNotFoundException{     //for update to check if person exist
+		return accountRepository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("Account not found of id:"+id));
+	}
+	public List<AccountDto> listAllAccounts() {	
+		return accountRepository.findAll().stream().map(this::EntityToDTO).collect(Collectors.toList());
+	}
+	
 
 }

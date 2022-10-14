@@ -17,11 +17,12 @@ public class AccountController {
 	
 	@Autowired
 	private AccountConverterService accountService;
-	
-//	@RequestMapping("/persons/{id}/accounts")
-//	public List<Account>getAllAccounts(@PathVariable Long id){
-//		return accountService.getAllAccounts(id);
-//	}
+	//write GET all accounts
+	@RequestMapping("/accounts")
+	public List<AccountDto>listAllAccounts(){
+		return accountService.listAllAccounts();
+	}
+
 	@RequestMapping("/persons/{id}/accounts")
 	public List<AccountDto>getAllAccounts(@PathVariable Long id){
 		return accountService.getAllAccounts(id);
@@ -41,6 +42,7 @@ public class AccountController {
 	@RequestMapping(method=RequestMethod.PUT, value="/persons/{personId}/accounts/{id}") 
 	public void updateAccount(@RequestBody AccountDto account, @PathVariable Long personId, @PathVariable Long id) { 
 		//check if personId, id exist
+		Account existingAccount=accountService.getOneAccount(id);
 		account.setPerson(new Person(personId,""));
 		accountService.updateAccount(account, id);
 	}
